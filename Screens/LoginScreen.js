@@ -4,8 +4,27 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react'
-
+import * as AppAuth  from "expo-app-auth";
 const LoginScreen = () => {
+    async function authenticate () {
+        const config = {
+            issuer:"https://account.spotify.com",
+            clientId:" 90c942dcded9400884b20bfacb869808",
+            scopes: [
+                "user-read-email",
+                "user-library-read",
+                "user-read-recently-played",
+                "user-top-read",
+                "playlist-read-private",
+                "playlist-read-collaborative",
+                "playlist-modify-public" // or "playlist-modify-private"
+              ],
+              redirectUrl:"exp://192.168.1.42:8082"
+        }
+        const result  = await AppAuth.authAsync(config);
+        console.log(result);
+    }
+    
     return (
         <LinearGradient colors={["#040306", "#131624"]} style={{ flex: 1 }}>
             <SafeAreaView>
@@ -13,7 +32,9 @@ const LoginScreen = () => {
                 <Entypo name="spotify" size={80} color="white" style={{ textAlign: 'center' }} />
                 <Text style={{ color: 'white', fontSize: 40, fontWeight: 'bold', textAlign: 'center', marginTop: 40 }}>Millons of Songs Free on Spotify!</Text>
                 <View style={{ height: 80 }} />
-                <Pressable style={{
+                <Pressable 
+                onPress ={authenticate}
+                style={{
                     backgroundColor: "#1DB954",
                     padding: 10,
                     marginLeft: "auto",
